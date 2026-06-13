@@ -1,36 +1,29 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <main
       style={{
-        background: "black",
-        color: "white",
         minHeight: "100vh",
+        background: "#5f5f5f",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column",
-        fontFamily: "Arial, sans-serif",
+        padding: "20px",
       }}
     >
-      <h1
+      <Image
+        src="/karlarsch-under-construction.png"
+        alt="Karl Arsch Under Construction"
+        width={1400}
+        height={900}
+        priority
         style={{
-          fontSize: "6rem",
-          marginBottom: "1rem",
-          letterSpacing: "0.1em",
+          width: "100%",
+          maxWidth: "1400px",
+          height: "auto",
         }}
-      >
-        KARL ARSCH
-      </h1>
-
-      <p>UNDER CONSTRUCTION</p>
-
-      <p
-        style={{
-          marginTop: "3rem",
-          opacity: 0.5,
-        }}
-      >
-      </p>
+      />
     </main>
   );
 }
