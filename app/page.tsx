@@ -5,7 +5,7 @@ export default function Home() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#5f5f5f",
+        background: "#DFBE21",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
