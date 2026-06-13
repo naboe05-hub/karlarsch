@@ -26,4 +26,13 @@ export default function Home() {
       />
     </main>
   );
-}
+}<p
+  style={{
+    marginTop: "20px",
+    color: "#D0466D",
+    fontSize: "14px",
+    letterSpacing: "0.2em",
+  }}
+>
+  © 2026 KARL ARSCH. ALL RIGHTS RESERVED.
+</p>
