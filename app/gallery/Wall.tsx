@@ -23,11 +23,16 @@ function seededRandom(seed: number) {
   };
 }
 
+// How many columns and rows the loose grid has for a given number of works.
+function gridSize(count: number) {
+  const cols = Math.ceil(Math.sqrt(count * 1.5));
+  return { cols, rows: Math.ceil(count / cols) };
+}
+
 // Spread the works over a loose grid, then jiggle each one so it looks
 // pinned up by hand rather than lined up.
 function scatter(count: number, random: () => number): Placement[] {
-  const cols = Math.ceil(Math.sqrt(count * 1.5));
-  const rows = Math.ceil(count / cols);
+  const { cols, rows } = gridSize(count);
   const slots = Array.from({ length: count }, (_, i) => i);
 
   // Shuffle the slots so every work can land anywhere.
@@ -144,10 +149,17 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
         <span className={styles.hint}>Drag the works around · click one to look closer</span>
       </div>
 
-      <div ref={boardRef} className={styles.board}>
+      <div
+        ref={boardRef}
+        className={styles.board}
+        // Give every row of works enough height so they don't all pile up.
+        style={{ minHeight: `calc(${gridSize(artworks.length).rows} * var(--card-w) * 1.2)` }}
+      >
         {artworks.map((art, i) => {
           const p = placements[i];
           const ratio = art.image.height / art.image.width;
+          // Horizontal works get a wider card so they aren't tiny next to tall ones.
+          const width = ratio < 1 ? "var(--card-w) * 1.4" : "var(--card-w)";
           return (
             <div
               key={art.slug}
@@ -159,8 +171,9 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
               style={
                 {
                   // Turn the 0–1 placement into a CSS position inside the board.
-                  left: `calc(${p.x} * (100% - var(--card-w)))`,
-                  top: `calc(${p.y} * (100% - var(--card-w) * ${ratio}))`,
+                  width: `calc(${width})`,
+                  left: `calc(${p.x} * (100% - ${width}))`,
+                  top: `calc(${p.y} * (100% - ${width} * ${ratio}))`,
                   zIndex: p.z,
                   "--rotate": `${p.rotate}deg`,
                 } as React.CSSProperties
@@ -179,7 +192,7 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
               <Image
                 src={art.image}
                 alt={art.title}
-                sizes="300px"
+                sizes="420px"
                 placeholder="blur"
                 draggable={false}
               />
