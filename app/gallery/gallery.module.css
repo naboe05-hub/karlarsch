@@ -63,7 +63,7 @@
 
 /* The wall the works are pinned to. */
 .board {
-  --card-w: clamp(170px, 32vw, 400px);
+  --card-w: clamp(130px, 32vw, 400px);
   position: relative;
   isolation: isolate; /* keeps the cards' z-index inside the board */
   flex: 1;

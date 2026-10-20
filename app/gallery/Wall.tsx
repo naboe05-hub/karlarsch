@@ -23,15 +23,19 @@ function seededRandom(seed: number) {
   };
 }
 
-// The starting layout: one work per row, zig-zagging left and right down
-// the wall, so visitors scroll past each piece on its own.
+// The starting layout: two works per row, one on the left and one on the
+// right, so visitors can scroll through them before shuffling.
 function lineUp(count: number, random: () => number): Placement[] {
-  return Array.from({ length: count }, (_, i) => ({
-    x: i % 2 === 0 ? 0.05 + random() * 0.3 : 0.65 + random() * 0.3,
-    y: count > 1 ? i / (count - 1) : 0.5,
-    rotate: (random() - 0.5) * 8,
-    z: i,
-  }));
+  const rows = Math.ceil(count / 2);
+  return Array.from({ length: count }, (_, i) => {
+    const row = Math.floor(i / 2);
+    return {
+      x: i % 2 === 0 ? 0.08 + random() * 0.1 : 0.82 + random() * 0.1,
+      y: rows > 1 ? row / (rows - 1) : 0.5,
+      rotate: (random() - 0.5) * 8,
+      z: i,
+    };
+  });
 }
 
 // Spread the works over a loose grid, then jiggle each one so it looks
@@ -165,8 +169,8 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
       <div
         ref={boardRef}
         className={styles.board}
-        // Enough height for every work to get its own row when lined up.
-        style={{ minHeight: `calc(${artworks.length} * var(--card-w) * 1.65)` }}
+        // Enough height for every row of two works when lined up.
+        style={{ minHeight: `calc(${Math.ceil(artworks.length / 2)} * var(--card-w) * 1.65)` }}
       >
         {artworks.map((art, i) => {
           const p = placements[i];
