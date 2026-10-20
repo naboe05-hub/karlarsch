@@ -20,23 +20,23 @@ import hansa from "@/public/gallery/hansa.jpg";
 export type Artwork = {
   slug: string; // short id, lowercase-with-dashes
   title: string;
-  medium?: string; // optional, e.g. "Linocut on paper"
+  medium?: string; // optional, e.g. "Woodcut on paper"
   year?: string; // optional
   image: StaticImageData; // importing the image gives Next.js its width and height
 };
 
 export const artworks: Artwork[] = [
   { slug: "plan-a", title: "What Is Plan A?", medium: "Ink, marker and collage on paper", image: planA },
-  { slug: "late-nights", title: "Late Nights", medium: "Linocut, painted", image: lateNights },
-  { slug: "faces", title: "Faces", medium: "Linocut", image: faces },
-  { slug: "faces-pink", title: "Faces (Pink)", medium: "Linocut, paint and marker", image: facesPink },
-  { slug: "faces-blue", title: "Faces (Blue)", medium: "Linocut, paint and marker", image: facesBlue },
+  { slug: "late-nights", title: "Late Nights", medium: "Woodcut, painted", image: lateNights },
+  { slug: "faces", title: "Faces", medium: "Woodcut", image: faces },
+  { slug: "faces-pink", title: "Faces (Pink)", medium: "Woodcut, paint and marker", image: facesPink },
+  { slug: "faces-blue", title: "Faces (Blue)", medium: "Woodcut, paint and marker", image: facesBlue },
   { slug: "dont-move", title: "Don't Move", medium: "Pencil, crayon and collage on paper", image: dontMove },
-  { slug: "my-happy-place", title: "My Happy Place", medium: "Linocut", image: myHappyPlace },
-  { slug: "portrait", title: "Portrait", medium: "Linocut", image: portrait },
-  { slug: "blindfold", title: "Blindfold", medium: "Linocut", image: blindfold },
-  { slug: "portrait-orange", title: "Portrait (Orange)", medium: "Linocut, marker and collage", image: portraitOrange },
-  { slug: "totems", title: "Totems", medium: "Linocut and ink", image: totems },
-  { slug: "tangle", title: "Tangle", medium: "Linocut, paint and marker", image: tangle },
-  { slug: "hansa", title: "Hansa", medium: "Crayon, marker and linocut on paper", image: hansa },
+  { slug: "my-happy-place", title: "My Happy Place", medium: "Woodcut", image: myHappyPlace },
+  { slug: "portrait", title: "Portrait", medium: "Woodcut", image: portrait },
+  { slug: "blindfold", title: "Blindfold", medium: "Woodcut", image: blindfold },
+  { slug: "portrait-orange", title: "Portrait (Orange)", medium: "Woodcut, marker and collage", image: portraitOrange },
+  { slug: "totems", title: "Totems", medium: "Woodcut and ink", image: totems },
+  { slug: "tangle", title: "Tangle", medium: "Woodcut, paint and marker", image: tangle },
+  { slug: "hansa", title: "Hansa", medium: "Crayon, marker and woodcut on paper", image: hansa },
 ];

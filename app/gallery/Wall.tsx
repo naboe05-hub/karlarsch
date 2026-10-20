@@ -23,16 +23,22 @@ function seededRandom(seed: number) {
   };
 }
 
-// How many columns and rows the loose grid has for a given number of works.
-function gridSize(count: number) {
-  const cols = Math.ceil(Math.sqrt(count * 1.5));
-  return { cols, rows: Math.ceil(count / cols) };
+// The starting layout: one work per row, zig-zagging left and right down
+// the wall, so visitors scroll past each piece on its own.
+function lineUp(count: number, random: () => number): Placement[] {
+  return Array.from({ length: count }, (_, i) => ({
+    x: i % 2 === 0 ? 0.05 + random() * 0.3 : 0.65 + random() * 0.3,
+    y: count > 1 ? i / (count - 1) : 0.5,
+    rotate: (random() - 0.5) * 8,
+    z: i,
+  }));
 }
 
 // Spread the works over a loose grid, then jiggle each one so it looks
 // pinned up by hand rather than lined up.
 function scatter(count: number, random: () => number): Placement[] {
-  const { cols, rows } = gridSize(count);
+  const cols = Math.ceil(Math.sqrt(count * 1.5));
+  const rows = Math.ceil(count / cols);
   const slots = Array.from({ length: count }, (_, i) => i);
 
   // Shuffle the slots so every work can land anywhere.
@@ -70,7 +76,7 @@ type Drag = {
 
 export default function Wall({ artworks }: { artworks: Artwork[] }) {
   const [placements, setPlacements] = useState(() =>
-    scatter(artworks.length, seededRandom(42)),
+    lineUp(artworks.length, seededRandom(42)),
   );
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -140,20 +146,27 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
     setPlacements(scatter(artworks.length, Math.random));
   }
 
+  function tidyUp() {
+    setPlacements(lineUp(artworks.length, Math.random));
+  }
+
   return (
     <>
       <div className={styles.toolbar}>
         <button type="button" className={styles.button} onClick={shuffle}>
           Shuffle
         </button>
-        <span className={styles.hint}>Drag the works around · click one to look closer</span>
+        <button type="button" className={styles.button} onClick={tidyUp}>
+          Line up
+        </button>
+        <span className={styles.hint}>Scroll · drag the works around · click one to look closer</span>
       </div>
 
       <div
         ref={boardRef}
         className={styles.board}
-        // Give every row of works enough height so they don't all pile up.
-        style={{ minHeight: `calc(${gridSize(artworks.length).rows} * var(--card-w) * 1.2)` }}
+        // Enough height for every work to get its own row when lined up.
+        style={{ minHeight: `calc(${artworks.length} * var(--card-w) * 1.65)` }}
       >
         {artworks.map((art, i) => {
           const p = placements[i];
@@ -192,7 +205,7 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
               <Image
                 src={art.image}
                 alt={art.title}
-                sizes="420px"
+                sizes="(max-width: 640px) 60vw, 560px"
                 placeholder="blur"
                 draggable={false}
               />
