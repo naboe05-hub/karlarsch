@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
         minHeight: "100vh",
         background: "#DFBE21",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         padding: "20px",
@@ -17,22 +19,35 @@ export default function Home() {
         alt="Karl Arsch Under Construction"
         width={1400}
         height={900}
-        priority
+        preload
         style={{
           width: "100%",
           maxWidth: "1400px",
           height: "auto",
         }}
       />
+      <Link
+        href="/gallery"
+        style={{
+          marginTop: "20px",
+          color: "#D0466D",
+          fontSize: "14px",
+          fontWeight: "bold",
+          letterSpacing: "0.2em",
+        }}
+      >
+        ENTER GALLERY →
+      </Link>
+      <p
+        style={{
+          marginTop: "20px",
+          color: "#D0466D",
+          fontSize: "14px",
+          letterSpacing: "0.2em",
+        }}
+      >
+        © 2026 KARL ARSCH. ALL RIGHTS RESERVED.
+      </p>
     </main>
   );
-}<p
-  style={{
-    marginTop: "20px",
-    color: "#D0466D",
-    fontSize: "14px",
-    letterSpacing: "0.2em",
-  }}
->
-  © 2026 KARL ARSCH. ALL RIGHTS RESERVED.
-</p>
+}

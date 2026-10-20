@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 :root {
+  /* Karl Arsch brand colors */
+  --karl-yellow: #dfbe21;
+  --karl-pink: #d0466d;
+
   --background: #ffffff;
   --foreground: #171717;
 }
