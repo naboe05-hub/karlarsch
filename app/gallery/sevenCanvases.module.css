@@ -1,0 +1,103 @@
+/* The Seven Canvases 3D page. */
+
+.viewer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 20px 20px;
+}
+
+/* The area the 3D piece is drawn in. */
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 60vh;
+  overflow: hidden;
+}
+
+/* The <canvas> three.js draws into (created by the scene, not by React). */
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none; /* fingers turn the piece instead of scrolling the page */
+  cursor: grab;
+}
+
+.stage canvas:active {
+  cursor: grabbing;
+}
+
+/* The still image of the pile, centred and sized exactly like the 3D pile.
+   It fades out once the 3D model has taken over. */
+.pileStill {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  translate: -50% -50%;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.pileStill[data-hidden="true"] {
+  opacity: 0;
+}
+
+.status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  margin: 0;
+  font-size: 11px;
+  text-align: center;
+}
+
+.chip {
+  position: absolute;
+  padding: 6px 10px;
+  background: #fff8e6;
+  color: var(--karl-pink);
+  font-size: 11px;
+  font-weight: bold;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.side {
+  left: 12px;
+  top: 12px;
+}
+
+.picked {
+  right: 12px;
+  bottom: 12px;
+  max-width: calc(100% - 24px);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.bar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transform: none;
+}
+
+/* "Separate canvases" while it is switched on. */
+.toggle[aria-pressed="true"] {
+  background: #fff8e6;
+  color: var(--karl-pink);
+  box-shadow: inset 0 0 0 2px var(--karl-pink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pileStill {
+    transition: none;
+  }
+}

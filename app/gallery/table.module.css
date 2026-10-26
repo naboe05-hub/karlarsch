@@ -120,11 +120,16 @@
   background: #fbf8ef;
 }
 
-/* Placeholder canvas for Seven Canvases (replaced in Step 6). */
-.sheet[data-kind="canvas"] {
-  aspect-ratio: 1.65 / 1.16;
-  background: #f2ece0;
-  border: 7px solid var(--frame);
+/* The rendered picture of the Seven Canvases pile: it already has its own
+   shape, so no paper, tape or box shadow, just a soft shadow around the canvases. */
+.sheet[data-kind="still"] {
+  width: calc(var(--pile-w) * 1.1);
+  box-shadow: none;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+}
+
+.sheet[data-kind="still"]::before {
+  content: none;
 }
 
 .pile[data-empty="true"] .sheet {

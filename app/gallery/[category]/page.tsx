@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { artworksInCategory } from "@/lib/artworks";
 import { categories, getCategory } from "@/lib/categories";
 import BackToTable from "../BackToTable";
+import SevenCanvases from "../SevenCanvases";
 import Wall from "../Wall";
 import styles from "../gallery.module.css";
 
@@ -41,7 +42,7 @@ export default async function CollectionPage(props: PageProps<"/gallery/[categor
       </header>
 
       {category.kind === "3d" ? (
-        <p className={styles.note}>The 3D piece is on its way.</p>
+        <SevenCanvases />
       ) : works.length > 0 ? (
         // Only this collection's works, so the viewer's arrows stay inside it.
         <Wall artworks={works} spillFromPile />

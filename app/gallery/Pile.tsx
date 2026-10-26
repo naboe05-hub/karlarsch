@@ -3,26 +3,24 @@ import Link from "next/link";
 import type { Artwork } from "@/lib/artworks";
 import type { Category } from "@/lib/categories";
 import { seededRandom, seedFrom } from "@/lib/seededRandom";
+import sevenCanvasesPile from "@/public/seven-canvases/pile-table.png";
 import styles from "./table.module.css";
 
 // One pile on the table. This is a Server Component: it has no clicks or
 // state of its own, the whole pile is simply a link to its collection.
-
-// Placeholder for Seven Canvases until the real pile image (Step 6):
-// the frame colours on the back of the canvases, in Karl's order 1–7.
-const CANVAS_FRAMES = ["#e8c22a", "#3e9b4f", "#d23a2c", "#2f5fb3", "#e46a9b", "#7b4bb3", "#b8bcc4"];
 
 const MAX_SHEETS = 12; // more sheets than this wouldn't show anyway
 const BLANK_SHEETS = 3; // how many empty pages a "coming soon" pile has
 
 type Sheet =
   | { kind: "art"; art: Artwork }
-  | { kind: "canvas"; frame: string }
+  | { kind: "still" } // a rendered picture of a 3D pile (Seven Canvases)
   | { kind: "blank" };
 
 function sheetsFor(category: Category, works: Artwork[]): Sheet[] {
   if (category.kind === "3d") {
-    return CANVAS_FRAMES.map((frame) => ({ kind: "canvas", frame }));
+    // Rendered from the 3D model, see scripts/render-seven-canvases-pile.mjs.
+    return [{ kind: "still" }];
   }
   if (works.length === 0) {
     return Array.from({ length: BLANK_SHEETS }, () => ({ kind: "blank" }));
@@ -61,7 +59,7 @@ export default function Pile({ category, works }: { category: Category; works: A
         {sheets.map((sheet, i) => {
           const isTop = i === sheets.length - 1;
           const landscape =
-            sheet.kind === "canvas" || (sheet.kind === "art" && sheet.art.image.width > sheet.art.image.height);
+            sheet.kind === "art" && sheet.art.image.width > sheet.art.image.height;
           return (
             <div
               key={i}
@@ -77,12 +75,11 @@ export default function Pile({ category, works }: { category: Category; works: A
                   "--y": `${-i * 3}px`,
                   // Where this sheet goes when the pile fans out: from -0.5
                   // (bottom sheet, far left) to 0.5 (top sheet, far right).
-                  "--fan": sheets.length > 1 ? (i / (sheets.length - 1) - 0.5).toFixed(3) : "0",
-                  "--frame": sheet.kind === "canvas" ? sheet.frame : undefined,
-                } as React.CSSProperties
+                  "--fan": sheets.length > 1 ? (i / (sheets.length - 1) - 0.5).toFixed(3) : "0",                } as React.CSSProperties
               }
             >
               {sheet.kind === "art" && <Image src={sheet.art.image} alt="" sizes="250px" />}
+              {sheet.kind === "still" && <Image src={sevenCanvasesPile} alt="" sizes="300px" />}
             </div>
           );
         })}
