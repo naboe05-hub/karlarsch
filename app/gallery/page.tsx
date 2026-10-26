@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { artworks } from "@/lib/artworks";
+import { categories } from "@/lib/categories";
 import Wall from "./Wall";
 import styles from "./gallery.module.css";
 
@@ -20,6 +21,15 @@ export default function GalleryPage() {
         </Link>
         <span>Gallery</span>
       </header>
+
+      {/* Temporary: simple links until this page becomes the table of stacks. */}
+      <nav className={styles.collections} aria-label="Collections">
+        {categories.map((category) => (
+          <Link key={category.slug} href={`/gallery/${category.slug}`}>
+            {category.title}
+          </Link>
+        ))}
+      </nav>
 
       <Wall artworks={artworks} />
 

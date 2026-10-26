@@ -1,4 +1,5 @@
 import type { StaticImageData } from "next/image";
+import type { CategorySlug } from "@/lib/categories";
 
 import planA from "@/public/gallery/plan-a.jpg";
 import lateNights from "@/public/gallery/late-nights.jpg";
@@ -21,20 +22,26 @@ export type Artwork = {
   title: string;
   medium?: string; // optional, e.g. "Woodcut on paper"
   year?: string; // optional
+  category: CategorySlug; // which collection it belongs to (see lib/categories.ts)
   image: StaticImageData; // importing the image gives Next.js its width and height
 };
 
 export const artworks: Artwork[] = [
-  { slug: "plan-a", title: "What Is Plan A?", medium: "Ink, marker and collage on paper", image: planA },
-  { slug: "late-nights", title: "Late Nights", medium: "Woodcut, painted", image: lateNights },
-  { slug: "faces", title: "Faces", medium: "Woodcut", image: faces },
-  { slug: "faces-pink", title: "Untitled", medium: "Woodcut, paint and marker", image: facesPink },
-  { slug: "faces-blue", title: "Untitled", medium: "Woodcut, paint and marker", image: facesBlue },
-  { slug: "dont-move", title: "Cheap Dopamin Kills", medium: "Pencil, crayon and collage on paper", image: dontMove },
-  { slug: "my-happy-place", title: "My Happy Place", medium: "Woodcut", image: myHappyPlace },
-  { slug: "portrait", title: "Self Portrait", medium: "Woodcut", image: portrait },
-  { slug: "blindfold", title: "Who tf is Karl Arsch", medium: "Woodcut", image: blindfold },
-  { slug: "portrait-orange", title: "Karl is Plan A", medium: "Woodcut, marker and collage", image: portraitOrange },
-  { slug: "totems", title: "Familie Boeck", medium: "Woodcut and ink", image: totems },
-  { slug: "hansa", title: "Möllerbrückenmann", medium: "Crayon, marker and woodcut on paper", image: hansa },
+  { slug: "plan-a", title: "What Is Plan A?", medium: "Ink, marker and collage on paper", category: "printmaking-multimedia", image: planA },
+  { slug: "late-nights", title: "Late Nights", medium: "Woodcut, painted", category: "printmaking-multimedia", image: lateNights },
+  { slug: "faces", title: "Faces", medium: "Woodcut", category: "printmaking-multimedia", image: faces },
+  { slug: "faces-pink", title: "Untitled", medium: "Woodcut, paint and marker", category: "printmaking-multimedia", image: facesPink },
+  { slug: "faces-blue", title: "Untitled", medium: "Woodcut, paint and marker", category: "printmaking-multimedia", image: facesBlue },
+  { slug: "dont-move", title: "Cheap Dopamin Kills", medium: "Pencil, crayon and collage on paper", category: "printmaking-multimedia", image: dontMove },
+  { slug: "my-happy-place", title: "My Happy Place", medium: "Woodcut", category: "printmaking-multimedia", image: myHappyPlace },
+  { slug: "portrait", title: "Self Portrait", medium: "Woodcut", category: "printmaking-multimedia", image: portrait },
+  { slug: "blindfold", title: "Who tf is Karl Arsch", medium: "Woodcut", category: "printmaking-multimedia", image: blindfold },
+  { slug: "portrait-orange", title: "Karl is Plan A", medium: "Woodcut, marker and collage", category: "printmaking-multimedia", image: portraitOrange },
+  { slug: "totems", title: "Familie Boeck", medium: "Woodcut and ink", category: "printmaking-multimedia", image: totems },
+  { slug: "hansa", title: "Möllerbrückenmann", medium: "Crayon, marker and woodcut on paper", category: "printmaking-multimedia", image: hansa },
 ];
+
+// All artworks in one collection, in the order they appear in the list above.
+export function artworksInCategory(category: CategorySlug) {
+  return artworks.filter((art) => art.category === category);
+}
