@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { artworksInCategory } from "@/lib/artworks";
 import { categories, getCategory } from "@/lib/categories";
+import BackToTable from "../BackToTable";
 import Wall from "../Wall";
 import styles from "../gallery.module.css";
 
@@ -33,9 +33,7 @@ export default async function CollectionPage(props: PageProps<"/gallery/[categor
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link href="/gallery" className={styles.home}>
-          ← Back to the table
-        </Link>
+        <BackToTable />
         <span>
           {category.title}
           {category.year && <> · {category.year}</>}
@@ -46,7 +44,7 @@ export default async function CollectionPage(props: PageProps<"/gallery/[categor
         <p className={styles.note}>The 3D piece is on its way.</p>
       ) : works.length > 0 ? (
         // Only this collection's works, so the viewer's arrows stay inside it.
-        <Wall artworks={works} />
+        <Wall artworks={works} spillFromPile />
       ) : (
         <p className={styles.note}>Coming soon. Nothing pinned up here yet.</p>
       )}

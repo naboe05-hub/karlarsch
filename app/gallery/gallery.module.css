@@ -139,6 +139,20 @@
   text-align: center;
 }
 
+/* Gathering back into a pile is a bit quicker than spreading out. */
+.board[data-gathering="true"] .card {
+  transition-duration: 0.5s;
+}
+
+/* People who asked their system for less motion: works jump to their place
+   instead of sliding (spilling out of the pile, Shuffle, Line up). */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card[data-dragging="true"] {
+    transition: none;
+  }
+}
+
 .copyright {
   padding: 20px;
   text-align: center;

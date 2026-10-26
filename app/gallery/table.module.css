@@ -26,9 +26,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   width: calc(var(--pile-w) * 1.15);
   color: inherit;
   text-decoration: none;
+}
+
+/* A fanned-out pile lies on top of its neighbours. */
+.pile:hover,
+.pile:focus-visible {
+  z-index: 1;
 }
 
 .pile:focus-visible {
@@ -55,7 +62,26 @@
   top: 50%;
   width: calc(var(--pile-w) * 0.78);
   transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate));
+  transform-origin: 50% 100%; /* turn around the bottom edge, like cards in a hand */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Fan the pile out like a hand of cards when the mouse is over it (or it has
+   keyboard focus), so you can peek inside. Only on devices that can hover,
+   and not for people who asked their system for less motion. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pile:hover .sheet {
+    transform: translate(-50%, -50%) translate(calc(var(--fan) * 70%), var(--y))
+      rotate(calc(var(--fan) * 40deg));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pile:focus-visible .sheet {
+    transform: translate(-50%, -50%) translate(calc(var(--fan) * 70%), var(--y))
+      rotate(calc(var(--fan) * 40deg));
+  }
 }
 
 .sheet[data-landscape="true"] {
@@ -144,7 +170,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stack {
+  .stack,
+  .sheet {
     transition: none;
   }
 }

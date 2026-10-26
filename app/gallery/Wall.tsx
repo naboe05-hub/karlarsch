@@ -3,10 +3,11 @@
 // "use client" makes this a Client Component: its code also runs in the
 // visitor's browser, which is what lets it react to dragging and clicks.
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Artwork } from "@/lib/artworks";
 import { seededRandom } from "@/lib/seededRandom";
+import { GATHER_EVENT } from "./BackToTable";
 import Viewer from "./Viewer";
 import styles from "./gallery.module.css";
 
@@ -27,6 +28,17 @@ function lineUp(count: number, random: () => number): Placement[] {
       z: i,
     };
   });
+}
+
+// All works stacked in one pile in the middle, the first work on top, like
+// the pile on the table. y says how far down the wall the pile lies.
+function pile(count: number, random: () => number, y = 0): Placement[] {
+  return Array.from({ length: count }, (_, i) => ({
+    x: 0.5 + (random() - 0.5) * 0.04,
+    y,
+    rotate: (random() - 0.5) * 14,
+    z: count - i,
+  }));
 }
 
 // Spread the works over a loose grid, then jiggle each one so it looks
@@ -69,10 +81,48 @@ type Drag = {
   moved: boolean; // false means this was a click, not a drag
 };
 
-export default function Wall({ artworks }: { artworks: Artwork[] }) {
+type Props = {
+  artworks: Artwork[];
+  // Optional: start with the works in a pile and let them slide out into
+  // their places, as if the pile from the table was just opened.
+  spillFromPile?: boolean;
+};
+
+export default function Wall({ artworks, spillFromPile = false }: Props) {
   const [placements, setPlacements] = useState(() =>
-    lineUp(artworks.length, seededRandom(42)),
+    spillFromPile ? pile(artworks.length, seededRandom(7)) : lineUp(artworks.length, seededRandom(42)),
   );
+
+  // The server and the browser both draw the pile first (their HTML has to
+  // match). Right after that, the browser switches to the normal layout,
+  // and the cards' CSS transition makes them slide there.
+  useEffect(() => {
+    if (!spillFromPile) return;
+    const frame = requestAnimationFrame(() => setPlacements(lineUp(artworks.length, seededRandom(42))));
+    return () => cancelAnimationFrame(frame);
+  }, [spillFromPile, artworks.length]);
+
+  // When "← Back to the table" is clicked, sweep the works back into a pile
+  // in the middle of the screen before the page changes.
+  const [gathering, setGathering] = useState(false);
+  useEffect(() => {
+    function handleGather(event: Event) {
+      const board = boardRef.current;
+      if (!board || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      event.preventDefault(); // tells BackToTable: "wait, I'm gathering"
+
+      // Which y (0 = top of the wall, 1 = bottom) puts the pile in the
+      // middle of what's on screen right now.
+      const rect = board.getBoundingClientRect();
+      const cardHeight = (board.firstElementChild as HTMLElement | null)?.offsetHeight ?? 0;
+      const y = clamp((window.innerHeight / 2 - rect.top - cardHeight / 2) / Math.max(1, rect.height - cardHeight));
+
+      setGathering(true);
+      setPlacements(pile(artworks.length, Math.random, y));
+    }
+    window.addEventListener(GATHER_EVENT, handleGather);
+    return () => window.removeEventListener(GATHER_EVENT, handleGather);
+  }, [artworks.length]);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -160,6 +210,7 @@ export default function Wall({ artworks }: { artworks: Artwork[] }) {
       <div
         ref={boardRef}
         className={styles.board}
+        data-gathering={gathering}
         // Enough height for every row of two works when lined up.
         style={{ minHeight: `calc(${Math.ceil(artworks.length / 2)} * var(--card-w) * 1.65)` }}
       >

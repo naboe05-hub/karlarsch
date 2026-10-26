@@ -75,6 +75,9 @@ export default function Pile({ category, works }: { category: Category; works: A
                   // Every sheet lies 3px higher than the one below it,
                   // so a pile with more works is visibly taller.
                   "--y": `${-i * 3}px`,
+                  // Where this sheet goes when the pile fans out: from -0.5
+                  // (bottom sheet, far left) to 0.5 (top sheet, far right).
+                  "--fan": sheets.length > 1 ? (i / (sheets.length - 1) - 0.5).toFixed(3) : "0",
                   "--frame": sheet.kind === "canvas" ? sheet.frame : undefined,
                 } as React.CSSProperties
               }
