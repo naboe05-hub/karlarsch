@@ -12,12 +12,30 @@
   padding: 40px 20px 80px;
 }
 
-/* Phones: smaller piles so two fit next to each other. */
+/* Phones: the piles lie in a loose column, one under the other, every other
+   one a bit to the left or right. */
 @media (max-width: 600px) {
   .table {
-    --pile-w: 130px;
-    gap: 32px 16px;
-    padding: 24px 16px 60px;
+    --pile-w: min(56vw, 230px);
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    padding: 48px 16px 60px;
+  }
+
+  /* a lower stack box, so the piles lie closer together
+     (".table .stack" is more specific than ".stack" further down, so it wins) */
+  .table .stack {
+    height: calc(var(--pile-w) * 1.05);
+  }
+
+  .pile:nth-child(odd) {
+    translate: -14% 0;
+  }
+
+  .pile:nth-child(even) {
+    translate: 14% 0;
   }
 }
 
@@ -168,9 +186,9 @@
    This has to come after .note above, or .note would override it. */
 @media (max-width: 600px) {
   .note {
-    min-width: 104px;
-    font-size: 9px;
-    letter-spacing: 0.05em;
+    min-width: 112px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
   }
 }
 

@@ -130,6 +130,7 @@ export default function Wall({ artworks, spillFromPile = false }: Props) {
   const boardRef = useRef<HTMLDivElement>(null);
   const drag = useRef<Drag | null>(null);
   const topZ = useRef(artworks.length);
+  const justDragged = useRef(false); // was the last press a drag (true) or a click (false)?
 
   function bringToFront(index: number) {
     const z = ++topZ.current;
@@ -175,11 +176,21 @@ export default function Wall({ artworks, spillFromPile = false }: Props) {
     setPlacements((prev) => prev.map((p, i) => (i === d.index ? { ...p, x, y } : p)));
   }
 
-  function handlePointerUp(index: number) {
-    const wasClick = drag.current && !drag.current.moved;
+  function handlePointerUp() {
+    justDragged.current = drag.current?.moved ?? false;
     drag.current = null;
     setDraggingIndex(null);
-    if (wasClick) setOpenIndex(index);
+  }
+
+  // The viewer opens on "click", not on pointer up: on phones the browser
+  // sends a click right after the finger lifts, and if the viewer were
+  // already open, that click would land on its background and close it.
+  function handleClick(index: number) {
+    if (justDragged.current) {
+      justDragged.current = false; // the work was dragged, not clicked
+      return;
+    }
+    setOpenIndex(index);
   }
 
   function handlePointerCancel() {
@@ -239,7 +250,8 @@ export default function Wall({ artworks, spillFromPile = false }: Props) {
               }
               onPointerDown={(e) => handlePointerDown(e, i)}
               onPointerMove={handlePointerMove}
-              onPointerUp={() => handlePointerUp(i)}
+              onPointerUp={handlePointerUp}
+              onClick={() => handleClick(i)}
               onPointerCancel={handlePointerCancel}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {

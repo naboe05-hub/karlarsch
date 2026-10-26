@@ -78,8 +78,11 @@ export default function Pile({ category, works }: { category: Category; works: A
                   "--fan": sheets.length > 1 ? (i / (sheets.length - 1) - 0.5).toFixed(3) : "0",                } as React.CSSProperties
               }
             >
-              {sheet.kind === "art" && <Image src={sheet.art.image} alt="" sizes="250px" />}
-              {sheet.kind === "still" && <Image src={sevenCanvasesPile} alt="" sizes="300px" />}
+              {/* The top sheets are what you see first, so load them right away. */}
+              {sheet.kind === "art" && (
+                <Image src={sheet.art.image} alt="" sizes="250px" loading={isTop ? "eager" : "lazy"} />
+              )}
+              {sheet.kind === "still" && <Image src={sevenCanvasesPile} alt="" sizes="300px" loading="eager" />}
             </div>
           );
         })}

@@ -31,6 +31,25 @@
   text-decoration: underline;
 }
 
+/* Phones: smaller header so "← Back to the table" and the title each fit on one line. */
+@media (max-width: 600px) {
+  .header {
+    gap: 12px;
+    padding: 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .home {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .header > span {
+    text-align: right;
+  }
+}
+
 .toolbar {
   display: flex;
   flex-wrap: wrap;

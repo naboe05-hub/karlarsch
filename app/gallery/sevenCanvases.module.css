@@ -96,6 +96,19 @@
   box-shadow: inset 0 0 0 2px var(--karl-pink);
 }
 
+/* Phones: the piece is wide and the screen is narrow, so a shorter stage
+   leaves less empty space above and below it and keeps the buttons in view. */
+@media (max-width: 600px) {
+  .viewer {
+    padding: 0 16px 16px;
+  }
+
+  .stage {
+    min-height: 0;
+    height: 52vh;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pileStill {
     transition: none;
