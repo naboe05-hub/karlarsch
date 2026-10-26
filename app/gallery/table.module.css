@@ -1,0 +1,150 @@
+/* The table on /gallery with one pile per collection. */
+
+.table {
+  --pile-w: clamp(150px, 22vw, 250px);
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start; /* keep rows together instead of spreading them over the screen */
+  gap: 48px 72px;
+  padding: 40px 20px 80px;
+}
+
+/* Phones: smaller piles so two fit next to each other. */
+@media (max-width: 600px) {
+  .table {
+    --pile-w: 130px;
+    gap: 32px 16px;
+    padding: 24px 16px 60px;
+  }
+}
+
+/* A whole pile with its sticky note; the entire thing is one link. */
+.pile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--pile-w) * 1.15);
+  color: inherit;
+  text-decoration: none;
+}
+
+.pile:focus-visible {
+  outline: 3px solid var(--karl-pink);
+  outline-offset: 10px;
+}
+
+.stack {
+  position: relative;
+  width: var(--pile-w);
+  height: calc(var(--pile-w) * 1.3);
+  transition: transform 0.25s;
+}
+
+/* Lift the pile a little when the mouse is over it or it has keyboard focus. */
+.pile:hover .stack,
+.pile:focus-visible .stack {
+  transform: translateY(-8px);
+}
+
+.sheet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--pile-w) * 0.78);
+  transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rotate));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.sheet[data-landscape="true"] {
+  width: calc(var(--pile-w) * 0.98);
+}
+
+.sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The top sheet casts the big shadow and has a strip of tape. */
+.sheetTop {
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+.sheetTop::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 20px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Empty page in a "coming soon" pile. */
+.sheet[data-kind="blank"] {
+  width: calc(var(--pile-w) * 0.66);
+  aspect-ratio: 1 / 1.35;
+  background: #fbf8ef;
+}
+
+/* Placeholder canvas for Seven Canvases (replaced in Step 6). */
+.sheet[data-kind="canvas"] {
+  aspect-ratio: 1.65 / 1.16;
+  background: #f2ece0;
+  border: 7px solid var(--frame);
+}
+
+.pile[data-empty="true"] .sheet {
+  opacity: 0.85;
+}
+
+/* The sticky note stuck on each pile, sticking out over the bottom-right edge. */
+.note {
+  position: absolute;
+  z-index: 100; /* above every sheet */
+  right: -14px;
+  bottom: 8%;
+  width: calc(var(--pile-w) * 0.56);
+  min-width: 96px;
+  padding: 10px 10px 12px;
+  /* slightly darker at the bottom, where a sticky note lifts off the paper */
+  background: linear-gradient(to bottom, var(--karl-pink) 75%, #b93a5e);
+  color: #fff8e6;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  rotate: var(--note-rotate);
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.4);
+}
+
+.noteMeta {
+  display: block;
+  margin-top: 4px;
+  font-size: 8px;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+/* Phones: tighter letters so long words like "Experimental" fit on the note.
+   This has to come after .note above, or .note would override it. */
+@media (max-width: 600px) {
+  .note {
+    min-width: 104px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack {
+    transition: none;
+  }
+}

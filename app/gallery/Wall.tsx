@@ -6,22 +6,13 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import type { Artwork } from "@/lib/artworks";
+import { seededRandom } from "@/lib/seededRandom";
 import Viewer from "./Viewer";
 import styles from "./gallery.module.css";
 
 // Where one artwork sits on the wall. x and y run from 0 (left/top edge)
 // to 1 (right/bottom edge), so the layout still fits after a window resize.
 type Placement = { x: number; y: number; rotate: number; z: number };
-
-// A random number generator that always gives the same numbers for the same
-// seed. The first layout has to be identical on the server and in the
-// browser, otherwise React reports a "hydration mismatch".
-function seededRandom(seed: number) {
-  return () => {
-    seed = (seed * 16807) % 2147483647;
-    return (seed - 1) / 2147483646;
-  };
-}
 
 // The starting layout: two works per row, one on the left and one on the
 // right, so visitors can scroll through them before shuffling.

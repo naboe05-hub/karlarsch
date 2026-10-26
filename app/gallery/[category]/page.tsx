@@ -34,7 +34,7 @@ export default async function CollectionPage(props: PageProps<"/gallery/[categor
     <main className={styles.page}>
       <header className={styles.header}>
         <Link href="/gallery" className={styles.home}>
-          ← Gallery
+          ← Back to the table
         </Link>
         <span>
           {category.title}

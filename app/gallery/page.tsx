@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { artworks } from "@/lib/artworks";
+import { artworksInCategory } from "@/lib/artworks";
 import { categories } from "@/lib/categories";
-import Wall from "./Wall";
+import Pile from "./Pile";
 import styles from "./gallery.module.css";
+import tableStyles from "./table.module.css";
 
 export const metadata: Metadata = {
   title: "Gallery",
   description: "Scanned works by Karl Arsch.",
 };
 
-// This is a Server Component: it runs on the server and sends finished HTML.
-// The interactive part (dragging, the viewer) lives in Wall, a Client Component.
+// The table: one pile per collection, in the order of lib/categories.ts.
+// Each collection opens on its own page, /gallery/[category].
 export default function GalleryPage() {
   return (
     <main className={styles.page}>
@@ -22,16 +23,15 @@ export default function GalleryPage() {
         <span>Gallery</span>
       </header>
 
-      {/* Temporary: simple links until this page becomes the table of stacks. */}
-      <nav className={styles.collections} aria-label="Collections">
-        {categories.map((category) => (
-          <Link key={category.slug} href={`/gallery/${category.slug}`}>
-            {category.title}
-          </Link>
-        ))}
-      </nav>
+      <div className={styles.toolbar}>
+        <span className={styles.hint}>Pick a pile to open it</span>
+      </div>
 
-      <Wall artworks={artworks} />
+      <div className={tableStyles.table}>
+        {categories.map((category) => (
+          <Pile key={category.slug} category={category} works={artworksInCategory(category.slug)} />
+        ))}
+      </div>
 
       <p className={styles.copyright}>© 2026 Karl Arsch. All rights reserved.</p>
     </main>
