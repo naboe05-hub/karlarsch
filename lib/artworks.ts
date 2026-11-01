@@ -38,6 +38,22 @@ import photoAdidas from "@/public/gallery/photography/adidas.jpg";
 import photoNegativePortrait from "@/public/gallery/photography/negative-portrait.jpg";
 import photoMotionBlur from "@/public/gallery/photography/motion-blur.jpg";
 
+// Experimental Study — titles are the scan file names (Ex_Final01 …).
+import exFinal01 from "@/public/gallery/experimental/ex-final-01.jpg";
+import exFinal02 from "@/public/gallery/experimental/ex-final-02.jpg";
+import exFinal03 from "@/public/gallery/experimental/ex-final-03.jpg";
+import exFinal04 from "@/public/gallery/experimental/ex-final-04.jpg";
+import exFinal05 from "@/public/gallery/experimental/ex-final-05.jpg";
+import exFinal06 from "@/public/gallery/experimental/ex-final-06.jpg";
+import exFinal07 from "@/public/gallery/experimental/ex-final-07.jpg";
+import exFinal08 from "@/public/gallery/experimental/ex-final-08.jpg";
+import exFinal09 from "@/public/gallery/experimental/ex-final-09.jpg";
+import exFinal10 from "@/public/gallery/experimental/ex-final-10.jpg";
+import exFinal11 from "@/public/gallery/experimental/ex-final-11.jpg";
+import exFinal12 from "@/public/gallery/experimental/ex-final-12.jpg";
+import exFinal13 from "@/public/gallery/experimental/ex-final-13.jpg";
+import exFinal14 from "@/public/gallery/experimental/ex-final-14.jpg";
+
 // One entry per artwork shown in the gallery.
 // To add a new piece: put the image in public/gallery/ (photos go in public/gallery/photography/), import it above,
 // and add an entry to the list below.
@@ -87,6 +103,22 @@ export const artworks: Artwork[] = [
   { slug: "adidas", title: "Untitled", medium: "Digital", category: "photography-digital", image: photoAdidas },
   { slug: "negative-portrait", title: "Untitled", medium: "Digital", category: "photography-digital", image: photoNegativePortrait },
   { slug: "motion-blur", title: "Untitled", medium: "Digital", category: "photography-digital", image: photoMotionBlur },
+
+  // Experimental Study
+  { slug: "ex-final-01", title: "Ex_Final01", category: "experimental-study", image: exFinal01 },
+  { slug: "ex-final-02", title: "Ex_Final02", category: "experimental-study", image: exFinal02 },
+  { slug: "ex-final-03", title: "Ex_Final03", category: "experimental-study", image: exFinal03 },
+  { slug: "ex-final-04", title: "Ex_Final04", category: "experimental-study", image: exFinal04 },
+  { slug: "ex-final-05", title: "Ex_Final05", category: "experimental-study", image: exFinal05 },
+  { slug: "ex-final-06", title: "Ex_Final06", category: "experimental-study", image: exFinal06 },
+  { slug: "ex-final-07", title: "Ex_Final07", category: "experimental-study", image: exFinal07 },
+  { slug: "ex-final-08", title: "Ex_Final08", category: "experimental-study", image: exFinal08 },
+  { slug: "ex-final-09", title: "Ex_Final09", category: "experimental-study", image: exFinal09 },
+  { slug: "ex-final-10", title: "Ex_Final10", category: "experimental-study", image: exFinal10 },
+  { slug: "ex-final-11", title: "Ex_Final11", category: "experimental-study", image: exFinal11 },
+  { slug: "ex-final-12", title: "Ex_Final12", category: "experimental-study", image: exFinal12 },
+  { slug: "ex-final-13", title: "Ex_Final13", category: "experimental-study", image: exFinal13 },
+  { slug: "ex-final-14", title: "Ex_Final14", category: "experimental-study", image: exFinal14 },
 ];
 
 // All artworks in one collection, in the order they appear in the list above.

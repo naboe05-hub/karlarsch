@@ -222,6 +222,7 @@ export default function Wall({ artworks, spillFromPile = false }: Props) {
         ref={boardRef}
         className={styles.board}
         data-gathering={gathering}
+        data-protect
         // Enough height for every row of two works when lined up.
         style={{ minHeight: `calc(${Math.ceil(artworks.length / 2)} * var(--card-w) * 1.65)` }}
       >

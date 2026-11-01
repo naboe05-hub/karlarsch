@@ -55,7 +55,7 @@ export default function Pile({ category, works }: { category: Category; works: A
         } as React.CSSProperties
       }
     >
-      <div className={styles.stack}>
+      <div className={styles.stack} data-protect>
         {sheets.map((sheet, i) => {
           const isTop = i === sheets.length - 1;
           const landscape =
@@ -80,9 +80,11 @@ export default function Pile({ category, works }: { category: Category; works: A
             >
               {/* The top sheets are what you see first, so load them right away. */}
               {sheet.kind === "art" && (
-                <Image src={sheet.art.image} alt="" sizes="250px" loading={isTop ? "eager" : "lazy"} />
+                <Image src={sheet.art.image} alt="" sizes="250px" loading={isTop ? "eager" : "lazy"} draggable={false} />
               )}
-              {sheet.kind === "still" && <Image src={sevenCanvasesPile} alt="" sizes="300px" loading="eager" />}
+              {sheet.kind === "still" && (
+                <Image src={sevenCanvasesPile} alt="" sizes="300px" loading="eager" draggable={false} />
+              )}
             </div>
           );
         })}

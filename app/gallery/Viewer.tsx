@@ -38,7 +38,9 @@ export default function Viewer({ artworks, index, onChange, onClose }: Props) {
     return () => window.removeEventListener("keydown", handleKey);
   }, [index, artworks.length, onChange, onClose]);
 
-  function handlePointerMove(event: React.PointerEvent<HTMLImageElement>) {
+  // The loupe follows the pointer over the shield (see below), which has
+  // exactly the size and position of the image.
+  function handlePointerMove(event: React.PointerEvent<HTMLDivElement>) {
     if (event.pointerType !== "mouse") return; // touch screens have no hover
     const rect = event.currentTarget.getBoundingClientRect();
     const px = event.clientX - rect.left;
@@ -54,22 +56,25 @@ export default function Viewer({ artworks, index, onChange, onClose }: Props) {
   }
 
   return (
-    <div className={styles.viewer} role="dialog" aria-modal="true" aria-label={art.title} onClick={onClose}>
+    <div className={styles.viewer} role="dialog" aria-modal="true" aria-label={art.title} onClick={onClose} data-protect>
       <button type="button" className={styles.close} onClick={onClose} aria-label="Close" autoFocus>
         ×
       </button>
 
       {/* stopPropagation: clicking the artwork itself shouldn't close the viewer */}
       <figure className={styles.figure} onClick={(e) => e.stopPropagation()}>
-        <Image
-          src={art.image}
-          alt={art.title}
-          sizes="90vw"
-          placeholder="blur"
-          className={styles.viewerImage}
-          onPointerMove={handlePointerMove}
-          onPointerLeave={() => setLoupe(null)}
-        />
+        {/* The shield is a see-through layer on top of the image, so a
+            right-click or long-press hits the layer, not the image itself. */}
+        <div className={styles.shield} onPointerMove={handlePointerMove} onPointerLeave={() => setLoupe(null)}>
+          <Image
+            src={art.image}
+            alt={art.title}
+            sizes="90vw"
+            placeholder="blur"
+            className={styles.viewerImage}
+            draggable={false}
+          />
+        </div>
         <figcaption className={styles.caption}>
           <button type="button" className={styles.navButton} onClick={previous} aria-label="Previous">
             ←

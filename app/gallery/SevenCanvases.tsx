@@ -72,7 +72,7 @@ export default function SevenCanvases() {
 
   return (
     <div className={styles.viewer}>
-      <div ref={stageRef} className={styles.stage}>
+      <div ref={stageRef} className={styles.stage} data-protect>
         <Image
           src={pileImage}
           alt="The seven canvases lying in a pile, back side up"
@@ -81,6 +81,7 @@ export default function SevenCanvases() {
           style={{ height: `${pileScale * 100}%` }}
           sizes="100vh"
           preload
+          draggable={false}
         />
 
         {error ? (

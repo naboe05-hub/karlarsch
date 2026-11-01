@@ -210,6 +210,19 @@
   margin: 0;
 }
 
+/* Wraps the viewer image tightly, with a see-through layer on top of it. */
+.shield {
+  position: relative;
+  max-width: 100%;
+  line-height: 0; /* no gap under the image */
+}
+
+.shield::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
 .viewerImage {
   width: auto;
   height: auto;
@@ -219,7 +232,7 @@
 }
 
 @media (hover: hover) {
-  .viewerImage {
+  .shield {
     cursor: none; /* the loupe replaces the cursor */
   }
 }
